@@ -1,4 +1,4 @@
-package com.example.userservice.entity;
+package com.userservice.entity;
 
 import jakarta.persistence.*;
 
@@ -12,6 +12,15 @@ public class User {
 
     private String username;
     private String email;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     // Getter & Setter
     public Long getId() {

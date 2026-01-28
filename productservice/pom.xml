@@ -12,8 +12,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>user-service</artifactId>
+    <groupId>com.productservice</groupId>
+    <artifactId>product-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
