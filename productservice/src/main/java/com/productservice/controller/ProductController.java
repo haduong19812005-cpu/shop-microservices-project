@@ -1,6 +1,7 @@
 package com.productservice.controller;
 
-import com.productservice.entity.Product;
+import com.productservice.dto.ProductRequest;
+import com.productservice.dto.ProductResponse;
 import com.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +16,24 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return service.saveProduct(product);
+    public ProductResponse createProduct(@RequestBody ProductRequest productRequest) {
+        return service.createProduct(productRequest);
     }
-
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return service.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public ProductResponse getProductById(@PathVariable Long id) {
         return service.getProductById(id);
+    }
+
+    @PutMapping("/reduce-quantity/{id}")
+    public ProductResponse reduceQuantity(
+            @PathVariable Long id,
+            @RequestParam int quantity
+    ) {
+        return service.reduceStock(id, quantity);
     }
 }

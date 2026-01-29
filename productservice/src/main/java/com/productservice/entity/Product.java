@@ -11,7 +11,8 @@ public class Product {
     private Long id;
 
     private String name;
-    private Double price;
+    private double price;
+    private int stockQuantity;
 
     // Getter & Setter
     public Long getId() {
@@ -30,11 +31,19 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }
