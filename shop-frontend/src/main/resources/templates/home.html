@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shop Microservices</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">SHOP MICROSERVICES</a>
+
+        <div class="d-flex align-items-center">
+
+            <div th:if="${session.MY_SESSION_USERNAME == null}">
+                <a href="/login" class="btn btn-outline-light me-2">Đăng Nhập</a>
+                <a href="/register" class="btn btn-warning">Đăng Ký</a>
+            </div>
+
+            <div th:if="${session.MY_SESSION_USERNAME != null}">
+                <span class="text-white me-3">
+                    Xin chào, <b th:text="${session.MY_SESSION_USERNAME}">User</b>
+                </span>
+
+                <a href="/logout" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Bạn có chắc muốn đăng xuất?');">
+                    Đăng xuất 🚪
+                </a>
+            </div>
+
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <div class="container mt-3">
+        <div th:if="${param.success}" class="alert alert-success">
+             Đặt hàng thành công!
+        </div>
+        <div th:if="${param.error}" class="alert alert-danger">
+             Có lỗi xảy ra (Hết hàng hoặc lỗi hệ thống).
+        </div>
+    </div>
+    <h1 class="text-center mb-4">Danh sách sản phẩm</h1>
+
+    <div class="row">
+        <div class="col-md-4 mb-3" th:each="product : ${products}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.name}">Tên SP</h5>
+                    <p class="card-text text-danger fw-bold"
+                       th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">Giá</p>
+                    <p class="card-text">
+                        Kho: <span th:text="${product.stockQuantity}">0</span>
+                    </p>
+
+                    <form action="/buy" method="post">
+                        <input type="hidden" name="id" th:value="${product.id}">
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">SL:</span>
+                            <input type="number" name="quantity" value="1" min="1" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Mua Ngay 🛒</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

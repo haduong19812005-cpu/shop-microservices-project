@@ -46,7 +46,7 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 
         if (product.getStockQuantity() < quantity) {
-            throw new RuntimeException("Hết hàng rồi! (Not enough stock)");
+            throw new RuntimeException("Sản phẩm đã hết hàng");
         }
         product.setStockQuantity(product.getStockQuantity() - quantity);
         Product savedProduct = repository.save(product);

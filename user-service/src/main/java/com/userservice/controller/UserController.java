@@ -25,4 +25,13 @@ public class UserController {
     public User getUserById(@PathVariable Long id) {
         return service.getUserById(id);
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        String token = service.login(user.getUsername(), user.getPassword());
+        if (token != null) {
+            return token;
+        }
+        throw new RuntimeException("Login Failed");
+    }
 }

@@ -21,12 +21,9 @@ public class OrderService {
         this.restTemplate = restTemplate;
     }
 
-    // =======================
-    // CHỨC NĂNG 1: ĐẶT HÀNG
-    // =======================
+
     public Order createOrder(CreateOrderRequest request) {
 
-        // 1️⃣ KIỂM TRA USER CÓ TỒN TẠI KHÔNG
         try {
             restTemplate.getForObject(
                     "http://USER-SERVICE/users/" + request.getUserId(),
@@ -36,7 +33,7 @@ public class OrderService {
             throw new RuntimeException("User không tồn tại");
         }
 
-        // 2️⃣ LẤY THÔNG TIN PRODUCT
+
         ProductResponse product = restTemplate.getForObject(
                 "http://PRODUCT-SERVICE/products/" + request.getProductId(),
                 ProductResponse.class
@@ -46,7 +43,7 @@ public class OrderService {
             throw new RuntimeException("Product không tồn tại");
         }
 
-        // 3️⃣ TRỪ TỒN KHO PRODUCT
+
         restTemplate.put(
                 "http://PRODUCT-SERVICE/products/reduce-quantity/"
                         + request.getProductId()
@@ -54,10 +51,10 @@ public class OrderService {
                 null
         );
 
-        // 4️⃣ TÍNH TỔNG TIỀN
+
         double totalPrice = product.getPrice() * request.getQuantity();
 
-        // 5️⃣ TẠO ORDER
+
         Order order = new Order();
         order.setUserId(request.getUserId());
         order.setProductId(product.getId());
@@ -65,13 +62,11 @@ public class OrderService {
         order.setTotalPrice(totalPrice);
         order.setCreatedAt(LocalDateTime.now());
 
-        // 6️⃣ LƯU DB
+
         return orderRepository.save(order);
     }
 
-    // ===================================
-    // CHỨC NĂNG 2: XEM LỊCH SỬ ĐƠN HÀNG
-    // ===================================
+
     public List<Order> getOrdersByUser(Long userId) {
         return orderRepository.findByUserId(userId);
     }
