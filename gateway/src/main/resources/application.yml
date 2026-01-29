@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8080
 
 spring:
   application:
@@ -14,17 +14,20 @@ spring:
 
       routes:
         - id: user-service
-          uri: lb://USER-SERVICE
+          uri: lb://user-service
           predicates:
             - Path=/api/users/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
 
         - id: product-service
-          uri: lb://PRODUCT-SERVICE
+          uri: lb://product-service
           predicates:
             - Path=/api/products/**
 
         - id: order-service
-          uri: lb://ORDER-SERVICE
+          uri: lb://order-service
           predicates:
             - Path=/api/orders/**
 
