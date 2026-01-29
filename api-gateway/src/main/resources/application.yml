@@ -9,7 +9,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true   # cho phép tự map service từ Eureka
+          enabled: true
           lower-case-service-id: true
 
       routes:
