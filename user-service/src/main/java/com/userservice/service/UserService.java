@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository repository;
+
     public User registerUser(User user) {
         return repository.save(user);
+    }
+
+    public User getUserById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
