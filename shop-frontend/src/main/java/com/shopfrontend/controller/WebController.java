@@ -1,5 +1,6 @@
 package com.shopfrontend.controller;
 
+import com.shopfrontend.dto.OrderResponse;
 import com.shopfrontend.service.ShopService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller // Lưu ý: Dùng @Controller (trả về HTML), KHÔNG dùng @RestController
+import java.util.List;
+
+@Controller
 public class WebController {
 
     @Autowired
@@ -35,21 +38,37 @@ public class WebController {
             HttpSession session,
             Model model
     ) {
-
         String token = (String) session.getAttribute("MY_SESSION_TOKEN");
+        String username = (String) session.getAttribute("MY_SESSION_USERNAME");
 
-
-        if (token == null) {
+        if (token == null || username == null) {
             return "redirect:/login";
         }
 
 
-        String orderResult = shopService.createOrder(productId, quantity, token);
+        String orderResult = shopService.createOrder(productId, quantity, token, username);
 
         if (orderResult == null) {
             return "redirect:/?error=Mua that bai";
         }
-
         return "redirect:/?success=Mua thanh cong";
     }
+
+
+    @GetMapping("/history")
+    public String historyPage(HttpSession session, Model model) {
+        String token = (String) session.getAttribute("MY_SESSION_TOKEN");
+        String username = (String) session.getAttribute("MY_SESSION_USERNAME");
+
+        if (token == null || username == null) {
+            return "redirect:/login";
+        }
+
+
+        List<OrderResponse> orders = shopService.getHistory(username, token);
+
+        model.addAttribute("orders", orders);
+        return "history";
+    }
+
 }

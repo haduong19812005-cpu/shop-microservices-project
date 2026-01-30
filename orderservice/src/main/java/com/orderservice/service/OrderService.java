@@ -24,6 +24,7 @@ public class OrderService {
 
     public Order createOrder(CreateOrderRequest request) {
 
+
         try {
             restTemplate.getForObject(
                     "http://USER-SERVICE/users/" + request.getUserId(),
@@ -57,17 +58,22 @@ public class OrderService {
 
         Order order = new Order();
         order.setUserId(request.getUserId());
+
+
+        order.setUsername(request.getUsername());
+        order.setProductName(product.getName());
+
+
         order.setProductId(product.getId());
         order.setQuantity(request.getQuantity());
         order.setTotalPrice(totalPrice);
         order.setCreatedAt(LocalDateTime.now());
 
-
         return orderRepository.save(order);
     }
 
 
-    public List<Order> getOrdersByUser(Long userId) {
-        return orderRepository.findByUserId(userId);
+    public List<Order> getAllOrdersByUser(String username) {
+        return orderRepository.findByUsername(username) ;
     }
 }

@@ -19,4 +19,10 @@ public class OrderController {
     public Order createOrder(@RequestBody CreateOrderRequest request) {
         return orderService.createOrder(request);
     }
+
+    @GetMapping("/my-orders/{username}")
+    public java.util.List<Order> getMyOrders(@PathVariable String username) {
+
+        return orderService.getAllOrdersByUser(username);
+    }
 }

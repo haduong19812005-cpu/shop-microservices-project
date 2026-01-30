@@ -41,7 +41,6 @@ public class ShopService {
         request.setPassword(password);
 
         try {
-
             return restTemplate.postForObject(url, request, String.class);
         } catch (Exception e) {
             return null;
@@ -58,16 +57,15 @@ public class ShopService {
             return false;
         }
     }
-    public String createOrder(Long productId, int quantity, String token) {
+    public String createOrder(Long productId, int quantity, String token, String username) {
         String url = gatewayUrl + "/api/orders";
-
 
         Map<String, Object> body = new HashMap<>();
         body.put("userId", 1);
         body.put("productId", productId);
         body.put("quantity", quantity);
 
-
+        body.put("username", username);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -75,10 +73,28 @@ public class ShopService {
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         try {
-
             return restTemplate.postForObject(url, requestEntity, String.class);
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public List<com.shopfrontend.dto.OrderResponse> getHistory(String username, String token) {
+        String url = gatewayUrl + "/api/orders/my-orders/" + username;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+
+            org.springframework.http.ResponseEntity<com.shopfrontend.dto.OrderResponse[]> response =
+                    restTemplate.exchange(url, org.springframework.http.HttpMethod.GET, entity, com.shopfrontend.dto.OrderResponse[].class);
+
+            return response.getBody() != null ? Arrays.asList(response.getBody()) : List.of();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
         }
     }
 }

@@ -12,6 +12,17 @@ public class UserService {
     private UserRepository repository;
 
     public User registerUser(User user) {
+
+        User existingUser = repository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            throw new RuntimeException("Tên đăng nhập này đã có người dùng!");
+        }
+
+        User existingEmail = repository.findByEmail(user.getEmail());
+        if (existingEmail != null) {
+            throw new RuntimeException("Email này đã được đăng ký rồi! Vui lòng dùng email khác.");
+        }
+
         return repository.save(user);
     }
 

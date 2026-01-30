@@ -12,13 +12,33 @@ public class Order {
     private Long id;
 
     private Long userId;
+    @Column(name = "username")
+    private String username;
     private Long productId;
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     private Integer quantity;
     private Double totalPrice;
     private LocalDateTime createdAt;
+    private String productName;
 
     public Long getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getUserId() {
